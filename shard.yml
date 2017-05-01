@@ -1,0 +1,9 @@
+name: motif
+version: 0.1.0
+
+authors:
+  - Wes <me@wmoxam.com>
+
+crystal: 0.21.1+89
+
+license: MIT
