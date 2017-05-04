@@ -1,0 +1,10 @@
+version: 1.0
+shards:
+  motif:
+    github: wmoxam/motif.cr
+    commit: addf6198709447ab4a3c83e72d8479146c743eb3
+
+  x11:
+    github: wmoxam/x11-cr
+    commit: d5978232921ca2c936e5a15ae37f70a01825fbb0
+
