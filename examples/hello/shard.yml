@@ -10,10 +10,10 @@ targets:
 
 dependencies:
   motif:
-    github: wmoxam/motif.cr
+    path: ../..
 
   x11:
-    github: wmoxam/x11-cr
+    path: ../../../x11-cr
 
 crystal: 0.22.0
 

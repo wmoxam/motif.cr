@@ -36,17 +36,13 @@ lib LibXm
   INDICATOR_FLAT_BOX = 2
   INDICATOR_CHECK_GLYPH = 16
   INDICATOR_CROSS_GLYPH = 32
-  fun b_text_escapement = XmbTextEscapement(x0 : XFontSet, x1 : LibC::Char*, x2 : LibC::Int) : LibC::Int
   type XFontSet = Void*
-  fun b_text_extents = XmbTextExtents(x0 : XFontSet, x1 : LibC::Char*, x2 : LibC::Int, x3 : XRectangle*, x4 : XRectangle*) : LibC::Int
   struct XRectangle
     x : LibC::Short
     y : LibC::Short
     width : LibC::UShort
     height : LibC::UShort
   end
-  fun b_text_per_char_extents = XmbTextPerCharExtents(x0 : XFontSet, x1 : LibC::Char*, x2 : LibC::Int, x3 : XRectangle*, x4 : XRectangle*, x5 : LibC::Int, x6 : LibC::Int*, x7 : XRectangle*, x8 : XRectangle*) : LibC::Int
-  fun b_draw_text = XmbDrawText(x0 : Display, x1 : Drawable, x2 : Gc, x3 : LibC::Int, x4 : LibC::Int, x5 : BTextItem*, x6 : LibC::Int)
   type Display = Void*
   alias Xid = LibC::ULong
   alias Drawable = Xid
@@ -57,11 +53,7 @@ lib LibXm
     delta : LibC::Int
     font_set : XFontSet
   end
-  fun b_draw_string = XmbDrawString(x0 : Display, x1 : Drawable, x2 : XFontSet, x3 : Gc, x4 : LibC::Int, x5 : LibC::Int, x6 : LibC::Char*, x7 : LibC::Int)
-  fun b_draw_image_string = XmbDrawImageString(x0 : Display, x1 : Drawable, x2 : XFontSet, x3 : Gc, x4 : LibC::Int, x5 : LibC::Int, x6 : LibC::Char*, x7 : LibC::Int)
-  fun b_reset_ic = XmbResetIC(x0 : Xic) : LibC::Char*
   type Xic = Void*
-  fun b_lookup_string = XmbLookupString(x0 : Xic, x1 : XKeyPressedEvent*, x2 : LibC::Char*, x3 : LibC::Int, x4 : KeySym*, x5 : LibC::Int*) : LibC::Int
   struct XKeyEvent
     type : LibC::Int
     serial : LibC::ULong
@@ -83,7 +75,6 @@ lib LibXm
   alias Window = Xid
   alias Time = LibC::ULong
   alias KeySym = Xid
-  fun b_set_wm_properties = XmbSetWMProperties(x0 : Display, x1 : Window, x2 : LibC::Char*, x3 : LibC::Char*, x4 : LibC::Char**, x5 : LibC::Int, x6 : XSizeHints*, x7 : XwmHints*, x8 : XClassHint*)
   struct XSizeHints
     flags : LibC::Long
     x : LibC::Int
@@ -122,7 +113,6 @@ lib LibXm
     res_name : LibC::Char*
     res_class : LibC::Char*
   end
-  fun b_text_list_to_text_property = XmbTextListToTextProperty(display : Display, list : LibC::Char**, count : LibC::Int, style : XiccEncodingStyle, text_prop_return : XTextProperty*) : LibC::Int
   enum XiccEncodingStyle
     XStringStyle = 0
     XCompoundTextStyle = 1
@@ -137,7 +127,6 @@ lib LibXm
     nitems : LibC::ULong
   end
   alias Atom = LibC::ULong
-  fun b_text_property_to_text_list = XmbTextPropertyToTextList(display : Display, text_prop : XTextProperty*, list_return : LibC::Char***, count_return : LibC::Int*) : LibC::Int
   fun translate_key = XmTranslateKey(dpy : Display, keycode : KeyCode, modifiers : Modifiers, modifiers_return : Modifiers*, keysym_return : KeySym*)
   alias KeyCode = UInt8
   alias Modifiers = LibC::UInt
@@ -157,12 +146,12 @@ lib LibXm
   DropSiteIgnore = 2
   fun drop_site_register = XmDropSiteRegister(widget : Widget, args : ArgList, arg_count : Cardinal)
   type Widget = Void*
-  struct Unknown
-    name : String
+  struct ArgRec
+    name : LibC::Char*
     value : XtArgVal
   end
-  alias ArgList = Unknown*
-  alias String = LibC::Char*
+  alias ArgList = ArgRec*
+  #alias String = LibC::Char*
   alias XtArgVal = LibC::Long
   alias Cardinal = LibC::UInt
   fun drop_site_unregister = XmDropSiteUnregister(widget : Widget)
@@ -726,10 +715,10 @@ lib LibXm
   ChangeWidth = 2
   ChangeHeight = 3
   Pixels = 0
-  100thMillimeters = 1
-  1000thInches = 2
-  100thPoints = 3
-  100thFontUnits = 4
+  # 100thMillimeters = 1
+  # 1000thInches = 2
+  # 100thPoints = 3
+  # 100thFontUnits = 4
   Inches = 5
   Centimeters = 6
   Millimeters = 7
@@ -998,11 +987,11 @@ lib LibXm
   ShadowEtchedInDash = 7
   ShadowEtchedOutDash = 8
   InvalidSeparatorType = 9
-  Pixmap = 1
+  #Pixmap = 1
   String = 2
   PixmapAndString = 3
-  Window = 0
-  Cursor = 2
+  #Window = 0
+  #Cursor = 2
   DragWindow = 3
   MaxOnTop = 0
   MaxOnBottom = 1
@@ -1170,8 +1159,7 @@ lib LibXm
   DropdownArrowButton = 2
   DropdownList = 3
   fun cvt_xm_string_table_to_text_property = XmCvtXmStringTableToTextProperty(display : Display, string_table : StringTable, count : LibC::Int, style : IccEncodingStyle, text_prop_return : XTextProperty*) : LibC::Int
-  type String = Void*
-  alias StringTable = String*
+  alias StringTable = LibC::Char**
   enum IccEncodingStyle
     StyleString = 0
     StyleCompoundText = 1
@@ -1186,20 +1174,20 @@ lib LibXm
   struct X_XmSecondaryResourceDataRec
     base_proc : ResourceBaseProc
     client_data : XtPointer
-    name : String
-    res_class : String
+    name : LibC::Char*
+    res_class : LibC::Char*
     resources : XtResourceList
     num_resources : Cardinal
   end
   alias SecondaryResourceData = X_XmSecondaryResourceDataRec*
   alias ResourceBaseProc = (Widget, XtPointer -> XtPointer)
   struct X_XtResource
-    resource_name : String
-    resource_class : String
-    resource_type : String
+    resource_name : LibC::Char*
+    resource_class : LibC::Char*
+    resource_type : LibC::Char*
     resource_size : Cardinal
     resource_offset : Cardinal
-    default_type : String
+    default_type : LibC::Char*
     default_addr : XtPointer
   end
   alias XtResourceList = X_XtResource*
@@ -1300,12 +1288,12 @@ lib LibXm
   alias XrmValuePtr = Unknown*
   fun register_segment_encoding = XmRegisterSegmentEncoding(fontlist_tag : LibC::Char*, ct_encoding : LibC::Char*) : LibC::Char*
   fun map_segment_encoding = XmMapSegmentEncoding(fontlist_tag : LibC::Char*) : LibC::Char*
-  fun cvt_ct_to_xm_string = XmCvtCTToXmString(text : LibC::Char*) : String
+  fun cvt_ct_to_xm_string = XmCvtCTToXmString(text : LibC::Char*) : LibC::Char*
   fun cvt_text_to_xm_string = XmCvtTextToXmString(display : Display, args : XrmValuePtr, num_args : Cardinal*, from_val : Unknown*, to_val : Unknown*, converter_data : XtPointer*) : Boolean
-  fun cvt_xm_string_to_ct = XmCvtXmStringToCT(string : String) : LibC::Char*
+  fun cvt_xm_string_to_ct = XmCvtXmStringToCT(string : LibC::Char*) : LibC::Char*
   fun cvt_xm_string_to_text = XmCvtXmStringToText(display : Display, args : XrmValuePtr, num_args : Cardinal*, from_val : Unknown*, to_val : Unknown*, converter_data : XtPointer*) : Boolean
-  fun cvt_xm_string_to_ut_f8string = XmCvtXmStringToUTF8String(string : String) : LibC::Char*
-  fun convert_string_to_units = XmConvertStringToUnits(screen : Screen*, spec : String, orientation : LibC::Int, to_type : LibC::Int, parse_error : XtEnum*) : LibC::Int
+  fun cvt_xm_string_to_ut_f8string = XmCvtXmStringToUTF8String(string : LibC::Char*) : LibC::Char*
+  fun convert_string_to_units = XmConvertStringToUnits(screen : Screen*, spec : LibC::Char*, orientation : LibC::Int, to_type : LibC::Int, parse_error : XtEnum*) : LibC::Int
   alias XtEnum = UInt8
   fun convert_units = XmConvertUnits(widget : Widget, dimension : LibC::Int, from_type : LibC::Int, from_val : LibC::Int, to_type : LibC::Int) : LibC::Int
   fun cvt_to_horizontal_pixels = XmCvtToHorizontalPixels(screen : Screen*, from_val : LibC::Int, from_type : LibC::Int) : LibC::Int
@@ -1317,18 +1305,18 @@ lib LibXm
   fun set_menu_cursor = XmSetMenuCursor(display : Display, cursor_id : Cursor)
   alias Cursor = Xid
   fun get_menu_cursor = XmGetMenuCursor(display : Display) : Cursor
-  fun create_simple_menu_bar = XmCreateSimpleMenuBar(parent : Widget, name : String, args : ArgList, arg_count : Cardinal) : Widget
-  fun create_simple_popup_menu = XmCreateSimplePopupMenu(parent : Widget, name : String, args : ArgList, arg_count : Cardinal) : Widget
-  fun create_simple_pulldown_menu = XmCreateSimplePulldownMenu(parent : Widget, name : String, args : ArgList, arg_count : Cardinal) : Widget
-  fun create_simple_option_menu = XmCreateSimpleOptionMenu(parent : Widget, name : String, args : ArgList, arg_count : Cardinal) : Widget
-  fun create_simple_radio_box = XmCreateSimpleRadioBox(parent : Widget, name : String, args : ArgList, arg_count : Cardinal) : Widget
-  fun create_simple_check_box = XmCreateSimpleCheckBox(parent : Widget, name : String, args : ArgList, arg_count : Cardinal) : Widget
-  fun va_create_simple_menu_bar = XmVaCreateSimpleMenuBar(parent : Widget, name : String, ...) : Widget
-  fun va_create_simple_popup_menu = XmVaCreateSimplePopupMenu(parent : Widget, name : String, callback : XtCallbackProc, ...) : Widget
-  fun va_create_simple_pulldown_menu = XmVaCreateSimplePulldownMenu(parent : Widget, name : String, post_from_button : LibC::Int, callback : XtCallbackProc, ...) : Widget
-  fun va_create_simple_option_menu = XmVaCreateSimpleOptionMenu(parent : Widget, name : String, option_label : String, option_mnemonic : KeySym, button_set : LibC::Int, callback : XtCallbackProc, ...) : Widget
-  fun va_create_simple_radio_box = XmVaCreateSimpleRadioBox(parent : Widget, name : String, button_set : LibC::Int, callback : XtCallbackProc, ...) : Widget
-  fun va_create_simple_check_box = XmVaCreateSimpleCheckBox(parent : Widget, name : String, callback : XtCallbackProc, ...) : Widget
+  fun create_simple_menu_bar = XmCreateSimpleMenuBar(parent : Widget, name : LibC::Char*, args : ArgList, arg_count : Cardinal) : Widget
+  fun create_simple_popup_menu = XmCreateSimplePopupMenu(parent : Widget, name : LibC::Char*, args : ArgList, arg_count : Cardinal) : Widget
+  fun create_simple_pulldown_menu = XmCreateSimplePulldownMenu(parent : Widget, name : LibC::Char*, args : ArgList, arg_count : Cardinal) : Widget
+  fun create_simple_option_menu = XmCreateSimpleOptionMenu(parent : Widget, name : LibC::Char*, args : ArgList, arg_count : Cardinal) : Widget
+  fun create_simple_radio_box = XmCreateSimpleRadioBox(parent : Widget, name : LibC::Char*, args : ArgList, arg_count : Cardinal) : Widget
+  fun create_simple_check_box = XmCreateSimpleCheckBox(parent : Widget, name : LibC::Char*, args : ArgList, arg_count : Cardinal) : Widget
+  fun va_create_simple_menu_bar = XmVaCreateSimpleMenuBar(parent : Widget, name : LibC::Char*, ...) : Widget
+  fun va_create_simple_popup_menu = XmVaCreateSimplePopupMenu(parent : Widget, name : LibC::Char*, callback : XtCallbackProc, ...) : Widget
+  fun va_create_simple_pulldown_menu = XmVaCreateSimplePulldownMenu(parent : Widget, name : LibC::Char*, post_from_button : LibC::Int, callback : XtCallbackProc, ...) : Widget
+  fun va_create_simple_option_menu = XmVaCreateSimpleOptionMenu(parent : Widget, name : LibC::Char*, option_label : LibC::Char*, option_mnemonic : KeySym, button_set : LibC::Int, callback : XtCallbackProc, ...) : Widget
+  fun va_create_simple_radio_box = XmVaCreateSimpleRadioBox(parent : Widget, name : LibC::Char*, button_set : LibC::Int, callback : XtCallbackProc, ...) : Widget
+  fun va_create_simple_check_box = XmVaCreateSimpleCheckBox(parent : Widget, name : LibC::Char*, callback : XtCallbackProc, ...) : Widget
   fun tracking_event = XmTrackingEvent(widget : Widget, cursor : Cursor, confine_to : Boolean, pev : XEvent*) : Widget
   fun tracking_locate = XmTrackingLocate(widget : Widget, cursor : Cursor, confine_to : Boolean) : Widget
   fun set_color_calculation = XmSetColorCalculation(proc : ColorProc) : ColorProc
@@ -1344,24 +1332,24 @@ lib LibXm
   fun get_color_calculation = XmGetColorCalculation : ColorProc
   fun get_colors = XmGetColors(screen : Screen*, color_map : Colormap, background : Pixel, foreground_ret : Pixel*, top_shadow_ret : Pixel*, bottom_shadow_ret : Pixel*, select_ret : Pixel*)
   fun change_color = XmChangeColor(widget : Widget, background : Pixel)
-  fun string_create = XmStringCreate(text : LibC::Char*, charset : StringCharSet) : String
+  fun string_create = XmStringCreate(text : LibC::Char*, charset : StringCharSet) : LibC::Char*
   alias StringCharSet = LibC::Char*
-  fun string_create_simple = XmStringCreateSimple(text : LibC::Char*) : String
-  fun string_create_localized = XmStringCreateLocalized(text : String) : String
-  fun string_direction_create = XmStringDirectionCreate(direction : StringDirection) : String
+  #fun string_create_simple = XmStringCreateSimple(text : LibC::Char*) : XmString
+  fun string_create_localized = XmStringCreateLocalized(text : LibC::Char*) : LibC::Char*
+  #fun string_direction_create = XmStringDirectionCreate(direction : StringDirection) : XmString
   alias StringDirection = UInt8
-  fun string_separator_create = XmStringSeparatorCreate : String
-  fun string_segment_create = XmStringSegmentCreate(text : LibC::Char*, charset : StringCharSet, direction : StringDirection, separator : Boolean) : String
-  fun string_lto_r_create = XmStringLtoRCreate(text : LibC::Char*, charset : StringCharSet) : String
-  fun string_create_lto_r = XmStringCreateLtoR(text : LibC::Char*, charset : StringCharSet) : String
-  fun string_init_context = XmStringInitContext(context : StringContext*, string : String) : Boolean
+  #fun string_separator_create = XmStringSeparatorCreate : XmString
+  #fun string_segment_create = XmStringSegmentCreate(text : LibC::Char*, charset : StringCharSet, direction : StringDirection, separator : Boolean) : XmString
+  #fun string_lto_r_create = XmStringLtoRCreate(text : LibC::Char*, charset : StringCharSet) : XmString
+  #fun string_create_lto_r = XmStringCreateLtoR(text : LibC::Char*, charset : StringCharSet) : XmString
+  #fun string_init_context = XmStringInitContext(context : StringContext*, string : XmString) : Boolean
   type StringContext = Void*
-  fun string_free_context = XmStringFreeContext(context : StringContext)
+  #fun string_free_context = XmStringFreeContext(context : StringContext)
   fun string_get_next_component = XmStringGetNextComponent(context : StringContext, text : LibC::Char**, charset : StringCharSet*, direction : StringDirection*, unknown_tag : StringComponentType*, unknown_length : LibC::UShort*, unknown_value : UInt8**) : StringComponentType
   alias StringComponentType = UInt8
-  fun string_peek_next_component = XmStringPeekNextComponent(context : StringContext) : StringComponentType
+  #fun string_peek_next_component = XmStringPeekNextComponent(context : StringContext) : StringComponentType
   fun string_get_next_segment = XmStringGetNextSegment(context : StringContext, text : LibC::Char**, charset : StringCharSet*, direction : StringDirection*, separator : Boolean*) : Boolean
-  fun string_get_lto_r = XmStringGetLtoR(string : String, charset : StringCharSet, text : LibC::Char**) : Boolean
+  #fun string_get_lto_r = XmStringGetLtoR(string : XmString, charset : StringCharSet, text : LibC::Char**) : Boolean
   fun font_list_entry_create = XmFontListEntryCreate(tag : LibC::Char*, type : FontType, font : XtPointer) : FontListEntry
   enum FontType
     FontIsFont = 0
@@ -1422,33 +1410,33 @@ lib LibXm
   fun font_list_init_font_context = XmFontListInitFontContext(context : FontContext*, fontlist : FontList) : Boolean
   fun font_list_get_next_font = XmFontListGetNextFont(context : FontContext, charset : StringCharSet*, font : XFontStruct**) : Boolean
   fun font_list_free_font_context = XmFontListFreeFontContext(context : FontContext)
-  fun string_concat = XmStringConcat(a : String, b : String) : String
-  fun string_concat_and_free = XmStringConcatAndFree(a : String, b : String) : String
-  fun string_n_concat = XmStringNConcat(first : String, second : String, n : LibC::Int) : String
-  fun string_copy = XmStringCopy(string : String) : String
-  fun string_n_copy = XmStringNCopy(str : String, n : LibC::Int) : String
-  fun string_byte_compare = XmStringByteCompare(a1 : String, b1 : String) : Boolean
-  fun string_compare = XmStringCompare(a : String, b : String) : Boolean
-  fun string_length = XmStringLength(string : String) : LibC::Int
-  fun string_empty = XmStringEmpty(string : String) : Boolean
-  fun string_is_void = XmStringIsVoid(string : String) : Boolean
-  fun string_has_substring = XmStringHasSubstring(string : String, substring : String) : Boolean
-  fun string_free = XmStringFree(string : String)
-  fun string_baseline = XmStringBaseline(fontlist : FontList, string : String) : Dimension
-  fun string_width = XmStringWidth(fontlist : FontList, string : String) : Dimension
-  fun string_height = XmStringHeight(fontlist : FontList, string : String) : Dimension
-  fun string_extent = XmStringExtent(fontlist : FontList, string : String, width : Dimension*, height : Dimension*)
-  fun string_line_count = XmStringLineCount(string : String) : LibC::Int
-  fun string_draw = XmStringDraw(d : Display, w : Window, fontlist : FontList, string : String, gc : Gc, x : Position, y : Position, width : Dimension, align : UInt8, lay_dir : UInt8, clip : XRectangle*)
-  fun string_draw_image = XmStringDrawImage(d : Display, w : Window, fontlist : FontList, string : String, gc : Gc, x : Position, y : Position, width : Dimension, align : UInt8, lay_dir : UInt8, clip : XRectangle*)
-  fun string_draw_underline = XmStringDrawUnderline(d : Display, w : Window, fntlst : FontList, str : String, gc : Gc, x : Position, y : Position, width : Dimension, align : UInt8, lay_dir : UInt8, clip : XRectangle*, under : String)
-  fun cvt_xm_string_to_byte_stream = XmCvtXmStringToByteStream(string : String, prop_return : UInt8**) : LibC::UInt
-  fun cvt_byte_stream_to_xm_string = XmCvtByteStreamToXmString(property : UInt8*) : String
+  #fun string_concat = XmStringConcat(a : XmString, b : XmString) : XmString
+  #fun string_concat_and_free = XmStringConcatAndFree(a : XmString, b : XmString) : XmString
+  #fun string_n_concat = XmStringNConcat(first : XmString, second : XmString, n : LibC::Int) : XmString
+  #fun string_copy = XmStringCopy(string : XmString) : XmString
+  #fun string_n_copy = XmStringNCopy(str : XmString, n : LibC::Int) : XmString
+  #fun string_byte_compare = XmStringByteCompare(a1 : XmString, b1 : XmString) : Boolean
+  #fun string_compare = XmStringCompare(a : XmString, b : XmString) : Boolean
+  #fun string_length = XmStringLength(string : XmString) : LibC::Int
+  #fun string_empty = XmStringEmpty(string : XmString) : Boolean
+  #fun string_is_void = XmStringIsVoid(string : XmString) : Boolean
+  #fun string_has_substring = XmStringHasSubstring(string : XmString, substring : XmString) : Boolean
+  fun string_free = XmStringFree(string : LibC::Char*)
+  #fun string_baseline = XmStringBaseline(fontlist : FontList, string : XmString) : Dimension
+  #fun string_width = XmStringWidth(fontlist : FontList, string : XmString) : Dimension
+  #fun string_height = XmStringHeight(fontlist : FontList, string : XmString) : Dimension
+  #fun string_extent = XmStringExtent(fontlist : FontList, string : XmString, width : Dimension*, height : Dimension*)
+  #fun string_line_count = XmStringLineCount(string : XmString) : LibC::Int
+  #fun string_draw = XmStringDraw(d : Display, w : Window, fontlist : FontList, string : XmString, gc : Gc, x : Position, y : Position, width : Dimension, align : UInt8, lay_dir : UInt8, clip : XRectangle*)
+  #fun string_draw_image = XmStringDrawImage(d : Display, w : Window, fontlist : FontList, string : XmString, gc : Gc, x : Position, y : Position, width : Dimension, align : UInt8, lay_dir : UInt8, clip : XRectangle*)
+  #fun string_draw_underline = XmStringDrawUnderline(d : Display, w : Window, fntlst : FontList, str : XmString, gc : Gc, x : Position, y : Position, width : Dimension, align : UInt8, lay_dir : UInt8, clip : XRectangle*, under : XmString)
+  #fun cvt_xm_string_to_byte_stream = XmCvtXmStringToByteStream(string : XmString, prop_return : UInt8**) : LibC::UInt
+  #fun cvt_byte_stream_to_xm_string = XmCvtByteStreamToXmString(property : UInt8*) : XmString
   fun string_byte_stream_length = XmStringByteStreamLength(string : UInt8*) : LibC::UInt
   fun string_peek_next_triple = XmStringPeekNextTriple(context : StringContext) : StringComponentType
   fun string_get_next_triple = XmStringGetNextTriple(context : StringContext, length : LibC::UInt*, value : XtPointer*) : StringComponentType
-  fun string_component_create = XmStringComponentCreate(tag : StringComponentType, length : LibC::UInt, value : XtPointer) : String
-  fun string_unparse = XmStringUnparse(string : String, tag : StringTag, tag_type : TextType, output_type : TextType, parse_table : ParseTable, parse_count : Cardinal, parse_model : ParseModel) : XtPointer
+  #fun string_component_create = XmStringComponentCreate(tag : StringComponentType, length : LibC::UInt, value : XtPointer) : XmString
+  #fun string_unparse = XmStringUnparse(string : XmString, tag : StringTag, tag_type : TextType, output_type : TextType, parse_table : ParseTable, parse_count : Cardinal, parse_model : ParseModel) : XtPointer
   alias StringTag = LibC::Char*
   enum TextType
     CharsetText = 0
@@ -1465,15 +1453,15 @@ lib LibXm
     OutputEnd = 3
     OutputBoth = 4
   end
-  fun string_parse_text = XmStringParseText(text : XtPointer, text_end : XtPointer*, tag : StringTag, type : TextType, parse_table : ParseTable, parse_count : Cardinal, call_data : XtPointer) : String
-  fun string_to_xm_string_table = XmStringToXmStringTable(string : String, break_comp : String, table : StringTable*) : Cardinal
-  fun string_table_to_xm_string = XmStringTableToXmString(table : StringTable, count : Cardinal, break_component : String) : String
+  #fun string_parse_text = XmStringParseText(text : XtPointer, text_end : XtPointer*, tag : StringTag, type : TextType, parse_table : ParseTable, parse_count : Cardinal, call_data : XtPointer) : XmString
+  #fun string_to_xm_string_table = XmStringToXmStringTable(string : XmString, break_comp : XmString, table : StringTable*) : Cardinal
+  #fun string_table_to_xm_string = XmStringTableToXmString(table : StringTable, count : Cardinal, break_component : XmString) : XmString
   fun string_table_unparse = XmStringTableUnparse(table : StringTable, count : Cardinal, tag : StringTag, tag_type : TextType, output_type : TextType, parse : ParseTable, parse_count : Cardinal, parse_model : ParseModel) : XtPointer*
-  fun string_table_parse_string_array = XmStringTableParseStringArray(strings : XtPointer*, count : Cardinal, tag : StringTag, type : TextType, parse : ParseTable, parse_count : Cardinal, call_data : XtPointer) : StringTable
+  #fun string_table_parse_string_array = XmStringTableParseStringArray(strings : XtPointer*, count : Cardinal, tag : StringTag, type : TextType, parse : ParseTable, parse_count : Cardinal, call_data : XtPointer) : StringTable
   fun direction_to_string_direction = XmDirectionToStringDirection(dir : Direction) : StringDirection
-  fun string_direction_to_direction = XmStringDirectionToDirection(dir : StringDirection) : Direction
-  fun string_generate = XmStringGenerate(text : XtPointer, tag : StringTag, type : TextType, rendition : StringTag) : String
-  fun string_put_rendition = XmStringPutRendition(string : String, rendition : StringTag) : String
+  #fun string_direction_to_direction = XmStringDirectionToDirection(dir : StringDirection) : Direction
+  #fun string_generate = XmStringGenerate(text : XtPointer, tag : StringTag, type : TextType, rendition : StringTag) : XmString
+  #fun string_put_rendition = XmStringPutRendition(string : XmString, rendition : StringTag) : XmString
   fun parse_mapping_create = XmParseMappingCreate(arg_list : ArgList, arg_count : Cardinal) : ParseMapping
   fun parse_mapping_set_values = XmParseMappingSetValues(parse_mapping : ParseMapping, arg_list : ArgList, arg_count : Cardinal)
   fun parse_mapping_get_values = XmParseMappingGetValues(parse_mapping : ParseMapping, arg_list : ArgList, arg_count : Cardinal)
@@ -1658,13 +1646,13 @@ lib LibXm
   fun create_main_window = XmCreateMainWindow(parent : Widget, name : LibC::Char*, args : ArgList, arg_count : Cardinal) : Widget
   fun va_create_main_window = XmVaCreateMainWindow(parent : Widget, name : LibC::Char*, ...) : Widget
   fun va_create_managed_main_window = XmVaCreateManagedMainWindow(parent : Widget, name : LibC::Char*, ...) : Widget
-  fun create_command = XmCreateCommand(parent : Widget, name : String, al : ArgList, ac : Cardinal) : Widget
+  fun create_command = XmCreateCommand(parent : Widget, name : LibC::Char*, al : ArgList, ac : Cardinal) : Widget
   fun va_create_command = XmVaCreateCommand(parent : Widget, name : LibC::Char*, ...) : Widget
   fun va_create_managed_command = XmVaCreateManagedCommand(parent : Widget, name : LibC::Char*, ...) : Widget
   fun command_get_child = XmCommandGetChild(widget : Widget, child : UInt8) : Widget
-  fun command_set_value = XmCommandSetValue(widget : Widget, value : String)
-  fun command_append_value = XmCommandAppendValue(widget : Widget, value : String)
-  fun command_error = XmCommandError(widget : Widget, error : String)
-  fun create_command_dialog = XmCreateCommandDialog(ds_p : Widget, name : String, fsb_args : ArgList, fsb_n : Cardinal) : Widget
+  fun command_set_value = XmCommandSetValue(widget : Widget, value : LibC::Char*)
+  fun command_append_value = XmCommandAppendValue(widget : Widget, value : LibC::Char*)
+  fun command_error = XmCommandError(widget : Widget, error : LibC::Char*)
+  fun create_command_dialog = XmCreateCommandDialog(ds_p : Widget, name : LibC::Char*, fsb_args : ArgList, fsb_n : Cardinal) : Widget
 end
 
