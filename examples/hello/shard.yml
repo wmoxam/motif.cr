@@ -1,0 +1,20 @@
+name: examples/hello
+version: 0.1.0
+
+authors:
+  - Wes <me@wmoxam.com>
+
+targets:
+  examples/hello:
+    main: src/examples/hello.cr
+
+dependencies:
+  motif:
+    path: ../..
+
+  x11:
+    github: wmoxam/x11-cr
+
+crystal: 0.22.0
+
+license: MIT
