@@ -37,6 +37,13 @@ lib LibXm
   INDICATOR_CHECK_GLYPH = 16
   INDICATOR_CROSS_GLYPH = 32
   type XFontSet = Void*
+  type XmString = Void*
+  struct CommandCallbackStruct
+    reason : LibC::Int
+    event : XEvent*
+    value : XmString
+    length : LibC::Int
+  end
   struct XRectangle
     x : LibC::Short
     y : LibC::Short
@@ -1335,7 +1342,7 @@ lib LibXm
   fun string_create = XmStringCreate(text : LibC::Char*, charset : StringCharSet) : LibC::Char*
   alias StringCharSet = LibC::Char*
   #fun string_create_simple = XmStringCreateSimple(text : LibC::Char*) : XmString
-  fun string_create_localized = XmStringCreateLocalized(text : LibC::Char*) : LibC::Char*
+  fun string_create_localized = XmStringCreateLocalized(text : LibC::Char*) : XmString
   #fun string_direction_create = XmStringDirectionCreate(direction : StringDirection) : XmString
   alias StringDirection = UInt8
   #fun string_separator_create = XmStringSeparatorCreate : XmString
@@ -1349,7 +1356,7 @@ lib LibXm
   alias StringComponentType = UInt8
   #fun string_peek_next_component = XmStringPeekNextComponent(context : StringContext) : StringComponentType
   fun string_get_next_segment = XmStringGetNextSegment(context : StringContext, text : LibC::Char**, charset : StringCharSet*, direction : StringDirection*, separator : Boolean*) : Boolean
-  #fun string_get_lto_r = XmStringGetLtoR(string : XmString, charset : StringCharSet, text : LibC::Char**) : Boolean
+  fun string_get_l_to_r = XmStringGetLtoR(string : XmString, charset : StringCharSet, text : LibC::Char**) : Boolean
   fun font_list_entry_create = XmFontListEntryCreate(tag : LibC::Char*, type : FontType, font : XtPointer) : FontListEntry
   enum FontType
     FontIsFont = 0
@@ -1421,7 +1428,7 @@ lib LibXm
   #fun string_empty = XmStringEmpty(string : XmString) : Boolean
   #fun string_is_void = XmStringIsVoid(string : XmString) : Boolean
   #fun string_has_substring = XmStringHasSubstring(string : XmString, substring : XmString) : Boolean
-  fun string_free = XmStringFree(string : LibC::Char*)
+  fun string_free = XmStringFree(string : XmString)
   #fun string_baseline = XmStringBaseline(fontlist : FontList, string : XmString) : Dimension
   #fun string_width = XmStringWidth(fontlist : FontList, string : XmString) : Dimension
   #fun string_height = XmStringHeight(fontlist : FontList, string : XmString) : Dimension
