@@ -60,14 +60,22 @@ module CmdArea
 
     X11::Xt.manage_child(menubar.as(Pointer(X11::Xt::X_WidgetRec)))
 
-    args = StaticArray(LibXm::ArgRec, 5).new(LibXm::ArgRec.new)
+    args = [] of LibXm::ArgRec
+    #StaticArray(LibXm::ArgRec, 4).new(LibXm::ArgRec.new)
 
-    X11::XtUtil.set_arg(args[0], "rows", 24)
-    X11::XtUtil.set_arg(args[1], "columns", 80)
-    X11::XtUtil.set_arg(args[2], "editable", 0)
-    X11::XtUtil.set_arg(args[3], "editMode", 0) # 0 : XmMULTI_LINE_EDIT
+    arg1 = LibXm::ArgRec.new
+    arg2 = LibXm::ArgRec.new
+    arg3 = LibXm::ArgRec.new
+    arg4 = LibXm::ArgRec.new
 
-    text_w = LibXm.create_scrolled_text(main_w.as(LibXm::Widget), "text_w", args.to_unsafe.as(LibXm::ArgList), 4)
+    arg1.name = "rows";     arg1.value = 24
+    arg2.name = "columns";  arg2.value = 80
+    arg3.name = "editable"; arg3.value = 0
+    arg4.name = "editMode"; arg4.value = 0
+
+    args << arg1; args << arg2; args << arg3; args << arg4
+
+    text_w = LibXm.create_scrolled_text(main_w.as(LibXm::Widget), "text_w", args.to_unsafe.as(LibXm::ArgList), args.size)
     X11::Xt.manage_child(text_w.as(Pointer(X11::Xt::X_WidgetRec)))
 
     X11::Xt.va_set_values(menu.as(Pointer(X11::Xt::X_WidgetRec)), "userData", text_w, nil)
@@ -80,21 +88,22 @@ module CmdArea
     X11::Xt.add_callback(
       command_w,
       "commandEnteredCallback",
-      ->(widget, client_data, call_data) {
+      ->(command_widget, client_data, call_data) {
         cmd = uninitialized Pointer(UInt8)
-        cbs = call_data.as(LibXm::CommandCallbackStruct)
-        str =  LibXm.string_create_localized cbs.value.as(LibC::Char*)
+        cbs = call_data.as(Pointer(LibXm::CommandCallbackStruct)).value
+
+        str = cbs.value
         LibXm.string_get_l_to_r(str , "FONTLIST_DEFAULT_TAG_STRING", pointerof(cmd))
-        if cmd.nil?
+        if cmd.is_a?(Nil)
           X11::Xt.free(cmd)
           return nil
         end
 
         output = String::Builder.new
-        Process.run(String.new(cmd), output: output) do
-          str = output.to_s
-          LibXm.text_replace(text_w, str.size, str.size, str)
-        end
+        error = String::Builder.new
+        Process.run(String.new(cmd), output: output, error: error, shell: true)
+        str = output.to_s
+        LibXm.text_replace(client_data.as(LibXm::Widget), 0, 0, str)
       },
       text_w.as(Pointer(Void))
     )
