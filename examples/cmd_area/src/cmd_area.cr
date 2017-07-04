@@ -1,6 +1,5 @@
 require "x11"
 require "motif"
-require "./cmd_area/*"
 
 module CmdArea
   def self.main

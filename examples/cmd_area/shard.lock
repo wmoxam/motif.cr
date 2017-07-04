@@ -5,6 +5,6 @@ shards:
     version: 0.1.0
 
   x11:
-    path: ../../../x11-cr
-    version: 0.1.0
+    github: wmoxam/x11-cr
+    commit: e944a3cf86b36f19ac29021b6d7a5b9569e2a09b
 
