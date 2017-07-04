@@ -13,7 +13,8 @@ dependencies:
     path: ../..
 
   x11:
-    path: ../../../x11-cr
+    github: wmoxam/x11-cr
+    branch: master
 
 crystal: 0.22.0
 
