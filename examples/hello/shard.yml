@@ -13,8 +13,8 @@ dependencies:
     path: ../..
 
   x11:
-    path: ../../../x11-cr
+    github: wmoxam/x11-cr
 
-crystal: 0.22.0
+crystal: 0.23.1
 
 license: MIT

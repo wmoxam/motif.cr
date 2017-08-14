@@ -6,5 +6,5 @@ shards:
 
   x11:
     github: wmoxam/x11-cr
-    commit: 77e5627a1af12c5a829a76664a592d605806f279
+    commit: e944a3cf86b36f19ac29021b6d7a5b9569e2a09b
 
