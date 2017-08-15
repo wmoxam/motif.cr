@@ -5,18 +5,18 @@ module Hello
   def self.main
     app = Motif.new(ARGV, {title: "Hello"})
 
-		button = Motif.create_element(
-			Motif::PushButton,
-			{
-				label: "Push here to say hello"
-			}.to_h
-		)
+    button = Motif.create_element(
+      Motif::PushButton,
+      {
+        label: "Push here to say hello"
+      }.to_h
+    )
 
-		button.add_callback {
-			puts "Hello from Crystal"
-		}
+    button.add_callback {
+      puts "Hello from Crystal"
+    }
 
-		app.render(button)
+    app.render(button)
   end
 
   main
