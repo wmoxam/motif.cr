@@ -3,7 +3,7 @@ require "motif"
 
 module Hello
   def self.main
-		app = Motif.new(ARGV, {title: "Hello"})
+    app = Motif.new(ARGV, {title: "Hello"})
 
 		button = Motif.create_element(
 			Motif::PushButton,
