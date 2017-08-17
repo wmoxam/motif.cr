@@ -1,9 +1,9 @@
 class Motif
   class PushButton
-    property :callback, :options
+    property :options
 
     def initialize(@options : Hash(Symbol, String))
-      @callback = nil
+      @on_click = nil
     end
 
     def render(parent)
@@ -18,23 +18,23 @@ class Motif
       )
       LibXm.string_free(label)
 
-      if callback = @callback
-        boxed_data = Box.box(@callback)
+      if on_click = @on_click
+        boxed_on_click = Box.box(@on_click)
 
         X11::Xt.add_callback(
           button,
           "activateCallback",
           ->(widget, client_data, call_data) {
-            data_as_callback = Box(typeof(callback)).unbox(client_data)
-            data_as_callback.call widget, client_data, call_data
+            unboxed_on_click = Box(typeof(on_click)).unbox(client_data)
+            unboxed_on_click.call widget, client_data, call_data
           },
-          boxed_data
+          boxed_on_click
         )
       end
     end
 
-    def add_callback(&cb : X11::Xt::CallbackProc)
-      @callback = cb
+    def on_click(&handler : X11::Xt::CallbackProc)
+      @on_click = handler
     end
 
     private def activate_callback

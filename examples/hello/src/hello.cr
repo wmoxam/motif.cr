@@ -12,7 +12,7 @@ module Hello
       }.to_h
     )
 
-    button.add_callback {
+    button.on_click {
       puts "Hello from Crystal"
     }
 
