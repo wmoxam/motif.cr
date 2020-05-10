@@ -1,9 +1,10 @@
 require "motif"
 require "./hello/*"
 
+
 module Hello
   def self.main
-    app = Motif::Application.new(argv: ARGV, title: "Hello")
+    app = Motif::Application.new(ARGV, title: "Hello")
     button = Motif::PushButton.new(app, label: "Push here to say hello")
     button.add_callback(
       on: :activate,

@@ -24,8 +24,8 @@ module CmdArea
       "main_w",
       LibXm.xmMainWindowWidgetClass,
       top_level,
-      "commandWindowLocation",
-      1, # XmCOMMAND_BELOW_WORKSPACE
+      LibXm::NcommandWindowLocation,
+      LibXm::COMMAND_BELOW_WORKSPACE,
       nil
     )
 
@@ -34,7 +34,7 @@ module CmdArea
     menubar = LibXm.va_create_simple_menu_bar(
       main_w.as(LibXm::Widget),
       "menubar",
-      "cascadeButton", # XmVaCASCADEBUTTON
+      LibXm::VaCASCADEBUTTON,
       file,
       "F",
       nil
@@ -49,7 +49,7 @@ module CmdArea
       "file_menu",
       0,
       ->(drawing_a,client_data,call_data) { exit(0) },
-      "pushButton",
+      LibXm::VaPUSHBUTTON,
       quit,
       "Q",
       nil, nil, nil
@@ -60,7 +60,6 @@ module CmdArea
     X11::Xt.manage_child(menubar.as(Pointer(X11::Xt::X_WidgetRec)))
 
     args = [] of LibXm::ArgRec
-    #StaticArray(LibXm::ArgRec, 4).new(LibXm::ArgRec.new)
 
     arg1 = LibXm::ArgRec.new
     arg2 = LibXm::ArgRec.new
@@ -80,13 +79,13 @@ module CmdArea
     X11::Xt.va_set_values(menu.as(Pointer(X11::Xt::X_WidgetRec)), "userData", text_w, nil)
 
     file = LibXm.string_create_localized("Command:")
-    command_w = X11::Xt.va_create_widget("command_w", LibXm.xmCommandWidgetClass, main_w, "promptString", file, nil)
+    command_w = X11::Xt.va_create_widget("command_w", LibXm.xmCommandWidgetClass, main_w, LibXm::NpromptString, file, nil)
     LibXm.string_free(file)
 
 
     X11::Xt.add_callback(
       command_w,
-      "commandEnteredCallback",
+      LibXm::NcommandEnteredCallback,
       ->(command_widget, client_data, call_data) {
         cmd = uninitialized Pointer(UInt8)
         cbs = call_data.as(Pointer(LibXm::CommandCallbackStruct)).value
