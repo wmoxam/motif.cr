@@ -15,6 +15,9 @@ module Motif
       @app = uninitialized X11::Xt::AppContext
     end
 
+    def add_widget(widget)
+      widget.instantiate_with_parent(self)
+    end
 
     def main_loop
       X11::Xt.realize_widget(widget)
@@ -22,7 +25,7 @@ module Motif
     end
 
     def widget
-      @top_level ||= X11::Xt.va_app_initialize(
+      @widget ||= X11::Xt.va_app_initialize(
         pointerof(@app),
         @title,
         nil,
