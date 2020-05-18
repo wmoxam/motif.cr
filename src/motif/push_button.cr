@@ -10,8 +10,11 @@ module Motif
       @callbacks = [] of Callback
     end
 
-    def add_callback(callback)
-      @callbacks.push callback
+    def callback(action, &block : X11::Xt::Widget, X11::Xt::Pointer, X11::Xt::Pointer ->)
+      @callbacks.push Motif::Callback.new(
+        action,
+        block,
+      )
     end
 
     def instantiate_with_parent(parent)
