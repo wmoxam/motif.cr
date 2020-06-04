@@ -2,6 +2,7 @@ require "x11"
 require "motif"
 require "./hello/*"
 
+# https://www.softintegration.com/chhtml/toolkit/demos/X11/motif/ch02/hello.html
 module Hello
   def self.main
     X11::Xt.set_language_proc(nil, nil, nil)
