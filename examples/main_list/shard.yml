@@ -1,4 +1,4 @@
-name: examples/hello
+name: examples/main_list
 version: 0.1.0
 
 authors:
@@ -6,7 +6,7 @@ authors:
 
 targets:
   examples/hello:
-    main: src/examples/hello.cr
+    main: src/examples/main_list.cr
 
 dependencies:
   motif:

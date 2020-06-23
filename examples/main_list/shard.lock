@@ -1,0 +1,10 @@
+version: 2.0
+shards:
+  motif:
+    path: ../..
+    version: 0.1.0
+
+  x11:
+    path: ../../../x11-cr
+    version: 0.2.0
+
