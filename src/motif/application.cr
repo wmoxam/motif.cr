@@ -15,7 +15,7 @@ module Motif
       @app = uninitialized X11::Xt::AppContext
     end
 
-    def add_widget(widget)
+    def add(widget)
       widget.instantiate_with_parent(self)
     end
 

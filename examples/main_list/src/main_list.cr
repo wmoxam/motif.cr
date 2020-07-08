@@ -29,6 +29,7 @@ module MainList
       nil
     )
 
+    puts "create_scrolled_list: #{main_w.inspect}"
     list_w = LibXm.create_scrolled_list(main_w.as(LibXm::Widget), "main_list", nil, 0)
 
     X11::Xt.va_set_values(list_w.as(Pointer(X11::Xt::X_WidgetRec)),

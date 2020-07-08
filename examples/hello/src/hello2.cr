@@ -8,7 +8,7 @@ module Hello
     button.callback(:activate) do |widget, client_data, call_data|
       puts "Hello from Crystal"
     end
-    app.add_widget(button)
+    app.add(button)
     app.main_loop
   end
 
