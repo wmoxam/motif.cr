@@ -1,6 +1,7 @@
 require "x11"
 require "motif"
 
+# From https://www.softintegration.com/chhtml/toolkit/demos/X11/motif/ch04/cmd_area1.html
 module CmdArea
   def self.main
     X11::Xt.set_language_proc(nil, nil, nil)
@@ -24,8 +25,8 @@ module CmdArea
       "main_w",
       LibXm.xmMainWindowWidgetClass,
       top_level,
-      "commandWindowLocation",
-      1, # XmCOMMAND_BELOW_WORKSPACE
+      LibXm::NcommandWindowLocation,
+      LibXm::COMMAND_BELOW_WORKSPACE,
       nil
     )
 
@@ -34,7 +35,7 @@ module CmdArea
     menubar = LibXm.va_create_simple_menu_bar(
       main_w.as(LibXm::Widget),
       "menubar",
-      "cascadeButton", # XmVaCASCADEBUTTON
+      LibXm::VaCASCADEBUTTON,
       file,
       "F",
       nil
@@ -48,8 +49,8 @@ module CmdArea
       menubar,
       "file_menu",
       0,
-      ->(drawing_a,client_data,call_data) { exit(0) },
-      "pushButton",
+      ->(drawing_a, client_data, call_data) { exit(0) },
+      LibXm::VaPUSHBUTTON,
       quit,
       "Q",
       nil, nil, nil
@@ -60,15 +61,14 @@ module CmdArea
     X11::Xt.manage_child(menubar.as(Pointer(X11::Xt::X_WidgetRec)))
 
     args = [] of LibXm::ArgRec
-    #StaticArray(LibXm::ArgRec, 4).new(LibXm::ArgRec.new)
 
     arg1 = LibXm::ArgRec.new
     arg2 = LibXm::ArgRec.new
     arg3 = LibXm::ArgRec.new
     arg4 = LibXm::ArgRec.new
 
-    arg1.name = "rows";     arg1.value = 24
-    arg2.name = "columns";  arg2.value = 80
+    arg1.name = "rows"; arg1.value = 24
+    arg2.name = "columns"; arg2.value = 80
     arg3.name = "editable"; arg3.value = 0
     arg4.name = "editMode"; arg4.value = 0
 
@@ -80,19 +80,18 @@ module CmdArea
     X11::Xt.va_set_values(menu.as(Pointer(X11::Xt::X_WidgetRec)), "userData", text_w, nil)
 
     file = LibXm.string_create_localized("Command:")
-    command_w = X11::Xt.va_create_widget("command_w", LibXm.xmCommandWidgetClass, main_w, "promptString", file, nil)
+    command_w = X11::Xt.va_create_widget("command_w", LibXm.xmCommandWidgetClass, main_w, LibXm::NpromptString, file, nil)
     LibXm.string_free(file)
-
 
     X11::Xt.add_callback(
       command_w,
-      "commandEnteredCallback",
+      LibXm::NcommandEnteredCallback,
       ->(command_widget, client_data, call_data) {
         cmd = uninitialized Pointer(UInt8)
         cbs = call_data.as(Pointer(LibXm::CommandCallbackStruct)).value
 
         str = cbs.value
-        LibXm.string_get_l_to_r(str , "FONTLIST_DEFAULT_TAG_STRING", pointerof(cmd))
+        LibXm.string_get_l_to_r(str, "FONTLIST_DEFAULT_TAG_STRING", pointerof(cmd))
         if cmd.is_a?(Nil)
           X11::Xt.free(cmd)
           return nil

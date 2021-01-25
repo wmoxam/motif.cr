@@ -1,0 +1,20 @@
+name: examples/main_list
+version: 0.1.0
+
+authors:
+  - Wes <me@wmoxam.com>
+
+targets:
+  examples/hello:
+    main: src/examples/main_list.cr
+
+dependencies:
+  motif:
+    path: ../..
+
+  x11:
+    path: ../../../x11-cr
+
+crystal: 0.34.0
+
+license: MIT

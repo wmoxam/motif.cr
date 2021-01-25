@@ -8,3 +8,7 @@
 # Libraries don't need dependency lock
 # Dependencies will be locked in application that uses them
 /shard.lock
+*./dwarf
+hello
+hello2
+cmd_area
